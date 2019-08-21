@@ -1,7 +1,9 @@
 <?php
 
 $params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/db.php';
+$db = file_exists(__DIR__ . '/db_local.php')?
+    (require __DIR__ . '/db_local.php')
+    :(require __DIR__ . '/db.php');
 
 $config = [
     'id' => 'basic',
@@ -13,13 +15,18 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'modules' => [
-      'auth' =>[
+      'authm' =>[
           'class' => 'app\modules\auth\Module'
       ]
     ],
     'components' => [
-        'activity' => ['class' => \app\components\ActivityComponent::class,
-            'classEntity' => \app\models\Activity::class],
+
+      'rbac'=>['class'=>\app\components\RbacComponent::class],
+        'authManager'=>[
+          'class'=>\yii\rbac\DbManager::class
+        ],
+        'auth' => ['class' => \app\components\AuthComponent::class],
+
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'TRbCna8Gdu2uHl72LF7ejJ_BIpEcR5mm',
@@ -28,7 +35,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Users',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -62,23 +69,7 @@ $config = [
     ],
     'params' => $params,
 ];
-//
-//if (YII_ENV_DEV) {
-//    // configuration adjustments for 'dev' environment
-//    $config['bootstrap'][] = 'debug';
-//    $config['modules']['debug'] = [
-//        'class' => 'yii\debug\Module',
-//        // uncomment the following to add your IP if you are not connecting from localhost.
-//        'allowedIPs' => ['*'],
-//    ];
-//
-//    $config['bootstrap'][] = 'gii';
-//    $config['modules']['gii'] = [
-//        'class' => 'yii\gii\Module',
-//        // uncomment the following to add your IP if you are not connecting from localhost.
-//        'allowedIPs' => ['*'],
-//    ];
-//}
+
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
@@ -87,5 +78,21 @@ if (YII_ENV_DEV) {
         // uncomment the following to add your IP if you are not connecting from localhost.
         'allowedIPs' => ['*'],
     ];
+
+    $config['bootstrap'][] = 'gii';
+    $config['modules']['gii'] = [
+        'class' => 'yii\gii\Module',
+        // uncomment the following to add your IP if you are not connecting from localhost.
+        'allowedIPs' => ['*'],
+    ];
 };
+//if (YII_ENV_DEV) {
+//    // configuration adjustments for 'dev' environment
+//    $config['bootstrap'][] = 'debug';
+//    $config['modules']['debug'] = [
+//        'class' => 'yii\debug\Module',
+//        // uncomment the following to add your IP if you are not connecting from localhost.
+//        'allowedIPs' => ['*'],
+//    ];
+//};
 return $config;

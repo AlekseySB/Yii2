@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\models;
 
 
@@ -14,7 +13,7 @@ class Day
     public function __construct($date, $activities, $isWeekend=false, $isHollyday=false){
 
         $this->date = $date;
-        $this->activities = $activities;
+        array_push($this->activities, $activities);
         $this->isWeekend = $isWeekend;
         $this->isHollyday = $isHollyday;
     }
