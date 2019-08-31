@@ -5,18 +5,7 @@ namespace app\models;
 use Yii;
 use yii\web\IdentityInterface;
 
-/**
- * This is the model class for table "users".
- *
- * @property int $id
- * @property string $email
- * @property string $password_hash
- * @property string $token
- * @property string $auth_key
- * @property string $createAt
- *
- * @property Activity[] $activities
- */
+
 class Users extends UsersBase implements IdentityInterface
 {
     public $password;
@@ -63,7 +52,9 @@ public function getUserName(){
      */
     public static function findIdentity($id)
     {
-        return Users::find()->andWhere(['id'=>$id])->one();
+        return Users::find()
+            ->cache(20)
+            ->andWhere(['id'=>$id])->one();
     }
 
     /**

@@ -20,8 +20,12 @@ $config = [
       ]
     ],
     'components' => [
+        'dao' => ['class' => \app\components\DAOComponent::class],
+        'activity' => ['class' => \app\components\ActivityComponent::class,
+            'classEntity' => \app\models\Activity::class],
+        'users' => ['class' => \app\components\UsersComponent::class],
+        'rbac'=>['class'=>\app\components\RbacComponent::class],
 
-      'rbac'=>['class'=>\app\components\RbacComponent::class],
         'authManager'=>[
           'class'=>\yii\rbac\DbManager::class
         ],
@@ -46,7 +50,7 @@ $config = [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
