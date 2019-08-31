@@ -1,9 +1,10 @@
 <?php
 
-
 ?>
 
 <div class="row">
+
+    <?php if($this->beginCache('user_list', ['duration' => 30])):?>
     <div class="col-md-6">
         <pre>
             <?php
@@ -11,6 +12,7 @@
             ?>
         </pre>
     </div>
+    <?php $this->endCache(); endif;?>
     <div class="col-md-6">
         <pre>
             <?php

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace app\controllers;
 
 
@@ -40,7 +41,10 @@ class AuthController extends Controller
 //            return var_dump(\Yii::$app->auth->signIn($model));
             if(\Yii::$app->auth->signIn($model)){
 
-                return $this->redirect(['/calendar/show']);
+                $year = date("Y", time());
+                $month = date("m", time());
+
+                return $this->redirect(["/calendar/show?year=$year&month=$month"]);
             }
         }
 
